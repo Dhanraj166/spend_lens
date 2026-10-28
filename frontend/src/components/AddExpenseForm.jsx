@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import { Calendar } from 'lucide-react';
 import '../styles/AddExpenseForm.css';
 
+// Today's date in the user's local time, as "yyyy-MM-dd"
+const today = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
+
 const AddExpenseForm = ({ onAdd }) => {
   const [form, setForm] = useState({
-    date: new Date().toISOString().split('T')[0],
+    date: today(),
     category: 'Food',
     amount: '',
   });
@@ -15,17 +21,20 @@ const AddExpenseForm = ({ onAdd }) => {
     e.preventDefault();
     if (!form.amount) return alert("Enter the Amount!");
 
-    await onAdd({
+    const saved = await onAdd({
       date: form.date,
       category: form.category,
       amount: parseFloat(form.amount),
     });
 
-    setForm({
-      date: new Date().toISOString().split('T')[0],
-      category: 'Food',
-      amount: '',
-    });
+    // Clear the form only if the expense was saved
+    if (saved) {
+      setForm({
+        date: today(),
+        category: 'Food',
+        amount: '',
+      });
+    }
   };
 
   return (

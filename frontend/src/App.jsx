@@ -48,7 +48,7 @@ function App() {
       setSummary(summaryData);
       setError('');
     } catch {
-      setError('Cannot reach the server. Is the Spring Boot backend running on port 8080?');
+      setError('Cannot reach the server. It may be waking up, so wait a minute and refresh.');
     }
   }, [month]);
 
@@ -75,8 +75,10 @@ function App() {
       } else {
         await loadData();
       }
+      return true; // saved
     } catch (err) {
       alert(errorMessage(err));
+      return false; // not saved
     }
   };
 
