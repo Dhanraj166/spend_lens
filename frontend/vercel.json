@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://spend-lens-4sho.onrender.com/api/:path*"
+    }
+  ]
+}
