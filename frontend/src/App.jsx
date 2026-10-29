@@ -36,6 +36,7 @@ function App() {
   const [summary, setSummary] = useState(EMPTY_SUMMARY);
   const [showAllExpenses, setShowAllExpenses] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   // Ref for auto scroll
   const allExpensesRef = useRef(null);
@@ -48,7 +49,9 @@ function App() {
       setSummary(summaryData);
       setError('');
     } catch {
-      setError('Cannot reach the server. It may be waking up, so wait a minute and refresh.');
+      setError('Cannot reach the server. Please wait a minute and refresh.');
+    }finally {
+      setLoading(false);
     }
   }, [month]);
 
@@ -98,6 +101,11 @@ function App() {
       <Navbar onAllExpensesClick={toggleAllExpenses} />
 
       <div className="container">
+        {loading && (
+          <div className="server-info">
+            Connecting to the server. On the free plan this can take up to a minute...
+          </div>
+        )}
         {error && <div className="server-error">{error}</div>}
 
         <AddExpenseForm onAdd={addExpense} />
